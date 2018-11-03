@@ -1,0 +1,43 @@
+$grey: #eee;
+@mixin flexCenter(
+  $direction: null,
+  $justify-content: center,
+  $align-items: center
+  ) {
+	display: flex;
+	justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $direction;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-family: 'Source Sans Pro'
+}
+
+body {
+	font-family: 'Source Sans Pro';
+	background-color: #12161c;
+	margin: 0;
+}
+
+.router-view-container {
+	padding: 30px;
+	display: flex;
+	justify-content:center;
+	align-items:center;
+}
+
+.container {
+	min-width:1000px;
+	background-color: white;
+	padding: 40px;
+}
+
+.flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.full-width {
+	width: 100%;
+}

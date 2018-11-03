@@ -1,0 +1,14 @@
+language: node_js
+node_js: 8
+script: npm run build
+branches:
+  only:
+  - master
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $PAT # Set in the settings page of your repository, as a secure variable
+  keep-history: true
+  local_dir: dist/
+  on:
+    branch: master
