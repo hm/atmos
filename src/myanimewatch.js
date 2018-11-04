@@ -8,17 +8,8 @@ export default {
     async getAnimeInfo(id) {
         return requests.get(`https://api.jikan.moe/v3/anime/${id}`);
     },
-    async searchAnime() {
-        /*
-  let message = `http://localhost:3000/search`
-  if (query) message += `/${query}`
-  if (limit) message += `/${limit}`
-  return axios({
-    method: 'GET',
-    url: message
-  })
-        */
-        return [];
+    async getSeasonAnime(year, month) {
+        return requests.get(`https://api.jikan.moe/v3/season/${year}/${month}`);
     },
     async getEpisodePost(id) {
         const novusphere = GetNovusphere();

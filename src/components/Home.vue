@@ -1,6 +1,11 @@
 
-<template>
-<div>
+  <template>
+  <div 
+    v-loading="loading"
+    element-loading-text="Loading..."
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    class="home">
     <div class="container bg-white px-4 py-4 u-h-100p rounded box-shadow-v1">
       <div class="row text-left">
         <div class="col-12 mb-2" style="position:relative">
@@ -8,31 +13,8 @@
           </h4>
         </div>
       </div>
-      <div class="col-12 flex-center">
-        <el-dialog append-to-body title="Submit New Series" :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item label="Title" :label-width="formLabelWidth">
-              <el-input v-model="form.name" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="Description" :label-width="formLabelWidth">
-              <el-input type="textarea"></el-input>
-            </el-form-item>
-            <el-form-item label="Type" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="Select a series type">
-                <el-option label="Anime" value="0" ></el-option>
-                <el-option label="TV show" value="1"></el-option>
-                <el-option label="Movie" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
-          </span>
-        </el-dialog>
-      </div>
       <el-table
-        :data="subset"
+        :data="animes"
         :stripe="true"
         border
         @row-click="viewShow"
@@ -44,7 +26,7 @@
           width="auto">
           <template slot-scope="scope">
             <div style="display:flex">
-              <img :src="scope.row.poster" style="width:auto;height:50px;margin-right:10px">
+              <img :src="scope.row.image_url" style="width:auto;height:50px;margin-right:10px">
               <div class="flex-center"> {{ scope.row.title }} </div>
             </div>
           </template>
@@ -62,141 +44,67 @@
         </el-table-column>
       </el-table>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
-
+import maw from "@/myanimewatch";
 export default {
   name: 'Home',
-  methods: {
-  },
-  computed: {
-    subset () {
-      if (this.getShows !== null) {
-        return this.getShows.map(x => {
-          let obj = {
-            id: x._id.$oid,
-            poster: x.poster,
-            title: x.title,
-            type: x.show_type,
-            episodes: x.episodes,
-            status: x.status,
-            score: x.score
-          }
-          return obj
-        })
-      } else {
-        return []
-      }
-    }
+  async created () {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = this.getAnimeSeason(date.getMonth());
+    const response = await maw.getSeasonAnime(year, month);
+    this.animes = response.anime;
+    this.loading = false;
   },
   data () {
     return {
-      step: 0,
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      formLabelWidth: '100px',
-      dialogFormVisible: false,
-      status: null,
-      searchString: '',
-      selectedGenres: [],
-      genres: ['Action', 'Mystery', 'Horror', 'Psychological','Supernatural', 'Drama', 'Seinen', 'Drama', 'Romance', 'Comedy', 'Sci-fi', 'Thriller'],
-      showList: [],
-      loading: false
+      animes: [],
+      loading: true
     }
   },
   methods: {
-    viewShow (row, event, tableInfo) {
-      if (tableInfo.label === 'Name') {
-        this.$router.push({name: 'content', params: {'contentId': row.id} })
+    getAnimeSeason (month) {
+      switch (month) {
+        case 0:
+        case 1:
+        case 2:
+          return 'winter';
+        case 3:
+        case 4:
+        case 5:
+          return 'spring';
+        case 6:
+        case 7:
+        case 8:
+          return 'summer';
+        case 9:
+        case 10:
+        case 11:
+          return 'fall';
       }
     },
-    search () {
-      this.loading = true
-      const options = {
-        genres: this.selectedGenres,
-        status: this.status,
-        string: this.searchString
+    viewShow (row, event, tableInfo) {
+      if (tableInfo.label === 'Name') {
+        this.$router.push({
+          name: 'content',
+          params: {
+            'content_id': row.mal_id
+          }
+        })
       }
-      this.searchShows(options).then(response => {
-        console.log(response)
-        this.showList = response
-        this.step = 1
-        this.loading = false
-      })
     }
   }
 }
 </script>
-<style>
-.el-table--striped .el-table__body tr.el-table__row--striped td{
-  background-color: #eee;
-}
-.el-table--border td:first-child .cell:hover {
-  cursor: pointer;
-}
-</style>
-<style scoped>
-.show:hover {
-  cursor:pointer;
-  opacity:0.8;
-}
-.full-width {
-  width: 100%;
-}
-.title {
-  font-weight: bold;
-}
-.rounded {
-  border-radius:5px;
-}
-.inline-flex {
-  display:inline-flex;
-}
-.hover:hover {
-  cursor:pointer;
-}
-.flex-wrap {
-  flex-wrap: wrap;
-}
-.bold {
-  font-weight:bold;
-}
-.sm-line-height {
-  line-height:15px;
-}
-.border-bottom{
-  border-bottom: 2px solid black;
-  padding-bottom: 5px;
-}
-.bg-grey {
-  background-color: #eee;
-}
-.big-badge {
-  font-size:20px;
-}
-.sm-font {
-  font-size:12px;
-}
-.ultra-lg {
-  font-size:35px;
-  font-weight:bold;
-}
-.flex-center {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
-.flex-column {
-  flex-direction: column;
+<style lang="scss">
+.home {
+  tr {
+    td:first-child:hover {
+      cursor:pointer;
+    }
+  }
 }
 </style>
