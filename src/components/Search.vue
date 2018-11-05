@@ -65,7 +65,7 @@
               :key="show.id"
               @click="$router.push({name: 'content', params: {'contentId': show.id} })"
               class="flex-center col-12 show"
-              v-for="show in getShows"
+              v-for="show in animes"
               style="align-items:flex-start;justify-content:flex-start;margin-top:20px;line-height: 17px;">
               <img :src="show.banner" style="width:auto;height:70px;margin-right:10px">
               <div class="full-width flex">
@@ -79,7 +79,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="getShows.length === 0" class="flex-center full-width" style="text-align:center">
+            <div v-if="animes.length === 0" class="flex-center full-width" style="text-align:center">
               <h1> There are no shows that meet your criteria</h1>
             </div>
         </div>
@@ -128,6 +128,7 @@ export default {
   data () {
     return {
       step: 0,
+      animes: [],
       status: '',
       searchString: '',
       searchType: 'All',
@@ -186,30 +187,6 @@ export default {
       }
     },
     async search () {
-      if (this.searchString.trim() !== '') {
-        this.loading = true
-        let options = {
-          query: this.searchString,
-          limit: parseInt(this.skip)
-        }
-        let regex = []
-        try {
-          const response = await this.searchShows(options)
-          console.log(response)
-          this.currentPage = response.data.current
-          this.max = response.data.total
-          console.log(this.currentpage, this.max)
-          this.loading = false
-        } catch (error) {
-          this.loading = false
-          console.log(error)
-        }
-      } else {
-        this.$notify.error({
-          title: 'Error',
-          message: 'Your search is empty'
-        })
-      }
     }
   }
 }

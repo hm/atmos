@@ -28,14 +28,24 @@ export default {
   data () {
     return {
       pages: [],
-      currentPage: 'home'
+      current_page: undefined
     }
   },
   methods: {
+    setCurrentPage () {
+      console.log(this.$route.name)
+      this.current_page = this.$route.name
+    },
     navigateTo (page) {
       this.$router.push({
         name: page
       })
+    }
+  },
+  watch: {
+    '$route.name': {
+      handler: 'setCurrentPage',
+      immediate: true
     }
   }
 }
