@@ -6,12 +6,8 @@ $grey: #eee;
   ) {
 	display: flex;
 	justify-content: $justify-content;
-  align-items: $align-items;
-  flex-direction: $direction;
-}
-
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-	font-family: 'Source Sans Pro'
+	align-items: $align-items;
+	flex-direction: $direction;
 }
 
 body {
@@ -28,9 +24,12 @@ body {
 }
 
 .container {
-	min-width:1000px;
+	width:1000px;
+	max-width: 80vw;
 	background-color: white;
 	padding: 40px;
+	min-height: 50vh;
+	border-radius: 4px;
 }
 
 .flex-center {

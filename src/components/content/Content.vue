@@ -3,9 +3,8 @@
   <div
     v-loading="loading"
     element-loading-text="Loading..."
-    element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
-    class="content">
+    class="container">
     <div v-if="!loading">
       <div class="title">
         <h1> {{ content.title }} </h1>
@@ -26,22 +25,27 @@
           </div>
         </div>
         <div class="right-col">
-          <div>
+          <div class="breadcrumbs">
             <a> Anime </a> /
             <a> {{ content.title }} </a> /
             <a @click="goToEpisodes()"> Episodes </a> /
             <a v-if="episode > 0"> Episode {{ episode }} </a>
           </div>
           <div class="stream">
-            <template v-if="!episode">
+            <template v-if="episode === 0">
               <div class="episodes">
-                <el-button
-                  type="info"
-                  v-for="(mirrors, index) in episodesWithMirrors"
-                  :key="mirrors.id"
-                  @click="selectEpisode(index + 1)">
-                  episode {{ (index + 1) }}
-                </el-button>
+                <template v-if="episodesWithMirrors.length > 0">
+                  <el-button
+                    type="info"
+                    v-for="(mirrors, index) in episodesWithMirrors"
+                    :key="mirrors.id"
+                    @click="selectEpisode(index + 1)">
+                    episode {{ (index + 1) }}
+                  </el-button>
+                </template>
+                <h1 v-else>
+                  No Mirrors found for this series
+                </h1>
               </div>
               <p> Synopsis </p>
               <div class="flex-center" v-html="content.synopsis" />
@@ -214,13 +218,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../styles/global';
-.content {
-  width: 80%;
-  max-width: 1000px;
-	background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  min-height: 50vh;
+.container {
   .title {
     text-align: center;
   }
@@ -247,6 +245,12 @@ export default {
       padding-left: 20px;
       padding-right: 20px;
       width: 100%;
+      .breadcrumbs {
+        margin: 5px;
+        a:hover {
+          cursor:pointer;
+        }
+      }
       .stream {
         background-color: $grey;
         padding: 20px;

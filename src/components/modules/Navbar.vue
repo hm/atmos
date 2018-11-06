@@ -1,39 +1,28 @@
 <template>
   <el-menu
-    :default-active="currentPage"
-    class="el-menu"
+    :default-active="current_page"
+    class="navbar"
     mode="horizontal"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
   >
-    <el-menu-item 
-      v-for="(route, index) in pages" 
-      @click="navigateTo(route)"
-      :index="route" 
-      :key="`${route}-${index}`"
-      > 
-        {{ route }}
-    </el-menu-item>
+    <el-menu-item index="1" @click="navigateTo('home')"> Home </el-menu-item>
+    <el-menu-item index="2"> <search-input /> </el-menu-item>
   </el-menu>
 </template>
 
 <script>
-import { HOME, SEARCH } from '@/constants/routes'
+import SearchInput from './SearchInput'
 export default {
   name: 'navbar',
-  created () {
-    this.pages = [HOME, SEARCH]
-  },
   data () {
     return {
-      pages: [],
-      current_page: undefined
+      current_page: 'home'
     }
   },
   methods: {
     setCurrentPage () {
-      console.log(this.$route.name)
       this.current_page = this.$route.name
     },
     navigateTo (page) {
@@ -42,17 +31,14 @@ export default {
       })
     }
   },
-  watch: {
-    '$route.name': {
-      handler: 'setCurrentPage',
-      immediate: true
-    }
+  components: {
+    SearchInput
   }
 }
 </script>
 
 <style lang="scss">
-.el-menu {
+.navbar {
   border-bottom: none!important;
   display: flex;
   li {

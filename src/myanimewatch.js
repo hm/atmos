@@ -11,6 +11,9 @@ export default {
     async getSeasonAnime(year, month) {
         return requests.get(`https://api.jikan.moe/v3/season/${year}/${month}`);
     },
+    async searchAnime(query) {
+        return requests.get(`https://api.jikan.moe/v3/search/anime?q=${encodeURI(query)}&page=1`); 
+    },
     async getEpisodePost(id) {
         const novusphere = GetNovusphere();
         const identity = await GetIdentity();

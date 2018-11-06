@@ -1,6 +1,6 @@
 <template>
   <div class="episode">
-    <div v-if="mirrors.length > 0">
+    <div>
       <el-select v-model="selectedMirrorString">
         <el-option 
           v-for="mirror in mirrors"
@@ -8,9 +8,6 @@
           :value="getMirrorLabel(mirror)">
         </el-option>
       </el-select>
-    </div>
-    <div v-else>
-      <h1>No mirrors found!</h1>
     </div>
 
     <div v-if="selectedMirror">
