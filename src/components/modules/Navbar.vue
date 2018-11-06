@@ -8,7 +8,9 @@
     active-text-color="#ffd04b"
   >
     <el-menu-item index="1" @click="navigateTo('home')"> Home </el-menu-item>
-    <el-menu-item index="2"> <search-input /> </el-menu-item>
+    <el-menu-item index="2">
+      <search-input />
+    </el-menu-item>
   </el-menu>
 </template>
 

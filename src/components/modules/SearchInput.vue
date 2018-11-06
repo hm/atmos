@@ -3,7 +3,8 @@
     placeholder="search for an anime"
     prefix-icon="el-icon-search"
     v-model="$root.search_query"
-    @keydown.enter.native="search">
+    @keydown.space.native="addSpace()"
+    @keyup.enter.native="search">
   </el-input>
 </template>
 
@@ -15,6 +16,9 @@ export default {
     type: String
   },
   methods: {
+    addSpace () {
+      this.$root.search_query += ' ';
+    },
     async search () {
       this.$root.loading = true;
       this.$router.push({ name: 'search'});
