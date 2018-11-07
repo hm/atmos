@@ -1,9 +1,9 @@
 <template>
-  <div class="episode">
+  <div :key="`episode-${index}`" class="episode">
     <div>
       <el-select v-model="selectedMirrorString">
         <el-option 
-          v-for="mirror in mirrors"
+          v-for="mirror in mirrors[index]"
           :key="mirror.id"
           :value="getMirrorLabel(mirror)">
         </el-option>
@@ -36,7 +36,7 @@
 export default {
   name: "Episode",
   props: [
-    'episode',
+    'index',
     'maxEpisodes',
     'mirrors',
   ],
@@ -46,12 +46,18 @@ export default {
       selectedMirror: undefined,
     }
   },
+  computed: {
+    episode () {
+      return this.index + 1
+    }
+  },
   methods: {
     setSelectedMirrorString () {
-      this.selectedMirrorString = this.mirrors[0] ? this.getMirrorLabel(this.mirrors[0]) : []
+      console.log(this.mirrors[this.index])
+      this.selectedMirrorString = this.mirrors[this.index][0] ? this.getMirrorLabel(this.mirrors[this.index][0]) : []
     },
     setSelectedMirror (mirror) {
-      this.selectedMirror = this.mirrors.find(mirror => this.getMirrorLabel(mirror) === this.selectedMirrorString)
+      this.selectedMirror = this.mirrors[this.index].find(mirror => this.getMirrorLabel(mirror) === this.selectedMirrorString)
     },
     getBaseLink (mirror) {
       return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0]
@@ -81,9 +87,10 @@ export default {
     width: 100%;
     @include flexCenter(column);
     iframe {
-      width: 100%;
-      height: 50vh;
-      overflow: visible;
+      width: 50vw;
+      height: 28.125vw;
+      min-height: 260px;
+      overflow: auto;
     }
   }
 }

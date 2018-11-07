@@ -52,9 +52,9 @@
             </template>
             <episode
               v-else
-              :mirrors="episodesWithMirrors[episode] || []"
+              :mirrors="episodesWithMirrors || []"
               :maxEpisodes="maxEpisodes()"
-              :episode="episode"
+              :index="parseInt(episode - 1)"
               @next="nextEpisode()"
               @prev="prevEpisode()"
               />
