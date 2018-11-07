@@ -18,12 +18,5 @@ new Vue({
   components: {
     App,
   },
-  data () {
-    return {
-      search: [],
-      loading: false,
-      search_query: ''
-    }
-  },
   template: '<App/>'
 })

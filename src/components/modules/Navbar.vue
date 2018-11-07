@@ -7,10 +7,10 @@
     text-color="#fff"
     active-text-color="#ffd04b"
   >
-    <el-menu-item index="1" @click="navigateTo('home')"> Home </el-menu-item>
-    <el-menu-item index="2">
+    <el-menu-item index="home" @click="navigateTo('home')"> Home </el-menu-item>
+    <li class="fake-menu-item">
       <search-input />
-    </el-menu-item>
+    </li>
   </el-menu>
 </template>
 
@@ -39,13 +39,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '../../styles/global';
 .navbar {
   border-bottom: none!important;
-  display: flex;
+  @include flexCenter;
   li {
     font-size: 24px !important;
   }
-  justify-content: center !important;
 }
 </style>
