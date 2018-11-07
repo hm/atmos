@@ -1,13 +1,19 @@
 $grey: #eee;
+$fs-small: 12px;
+$fs-medium: 18px;
+$padding: 20px;
+
 @mixin flexCenter(
   $direction: null,
   $justify-content: center,
-  $align-items: center
+  $align-items: center,
+  $flex-wrap: wrap,
   ) {
 	display: flex;
 	justify-content: $justify-content;
 	align-items: $align-items;
 	flex-direction: $direction;
+	flex-wrap: $flex-wrap;
 }
 
 body {
@@ -27,7 +33,7 @@ body {
 	width:1000px;
 	max-width: 80vw;
 	background-color: white;
-	padding: 40px;
+	padding: $padding;
 	min-height: 50vh;
 	border-radius: 4px;
 }
@@ -39,4 +45,12 @@ body {
 }
 .full-width {
 	width: 100%;
+}
+
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 0;
 }
