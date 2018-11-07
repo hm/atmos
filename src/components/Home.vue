@@ -7,14 +7,14 @@
     class="home">
     <div class="container">
       <h1> {{ pascalCase(season) }} {{ year }} Anime </h1>
-      <anime-list :animes="animes" />
+      <anime-tiles :animes="animes" />
     </div>
   </div>
 </template>
 
 <script>
 import maw from "@/myanimewatch";
-import AnimeList from '@/components/modules/AnimeList'
+import AnimeTiles from '@/components/modules/AnimeTiles'
 import upperFirst from 'lodash/upperFirst'
 export default {
   name: 'Home',
@@ -58,7 +58,7 @@ export default {
     }
   },
   components: {
-    AnimeList
+    AnimeTiles
   }
 }
 </script>
