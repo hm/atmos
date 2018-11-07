@@ -61,7 +61,7 @@ export default {
 .tag {
   margin: 2px;
   padding: 2px;
-  :hover {
+  &:hover {
     opacity: 0.8;
   }
   div {

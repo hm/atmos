@@ -69,6 +69,9 @@ export default {
       height: 100%;
       width: auto;
       overflow: auto;
+      &:hover {
+        cursor: pointer;
+      }
     }
     div {
       padding: 5px;
