@@ -88,7 +88,9 @@ export default {
     @include flexCenter(column);
     iframe {
       width: 50vw;
+      max-width: 100%;
       height: 28.125vw;
+      max-height: 366.1875px;
       min-height: 260px;
       overflow: auto;
     }
