@@ -12,6 +12,6 @@ export default new Router({
         { name: 'episode', component: route.Episode, path: ':episode' },
       ]
     },
-    { name: 'search',  component: route.Search,  path: '/search'},
+    { name: 'search',  component: route.Search,  path: '/search/:search_query'},
   ]
 })
