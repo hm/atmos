@@ -1,22 +1,31 @@
 <template>
   <div class="tiles">
-    <el-card v-for="anime in animes" :key="anime.mal_id" class="box-card">
-      <h4 class="title">
-        {{ anime.title }}
-      </h4>
-      <div class="body">
-        <img slot="reference" @click="viewShow(anime.mal_id)" :src="anime.image_url">
-      </div>
-      <div class="footer">
-        <div class="genres">
-          <tag
-            :label="genre.name"
-            v-for="genre in anime.genres" 
-            :key="genre.mal_id">
-          </tag>
+    <masonry
+      :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
+      :gutter="{default: '10px'}"
+      >
+      <el-card
+        v-for="anime in animes"
+        :key="anime.mal_id"
+        class="tile">
+        <h4 class="title">
+          {{ anime.title }}
+        </h4>
+        <div class="body">
+          <img slot="reference" @click="viewShow(anime.mal_id)" :src="anime.image_url">
         </div>
-      </div>
-    </el-card>
+        <div class="footer">
+          <div class="genres">
+            <tag
+              :label="genre.name"
+              v-for="genre in anime.genres" 
+              :key="genre.mal_id">
+            </tag>
+          </div>
+        </div>
+      </el-card>
+    </masonry>
+    
   </div>
 </template>
 
@@ -42,22 +51,16 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.el-card__body {
-  padding: 10px;
-}
-</style>
 <style lang="scss" scoped>
 @import '../../styles/global';
 .tiles {
  @include flexCenter(row, center);
- $margin: 5px;
- $cols: 3;
- $width: 100% / $cols;
- >div {
-  width: calc(#{$width} - #{$margin} * #{$cols});
-  margin: $margin;
+ .tile {
+  padding: 10px;
+  width: 100%;
   height: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
   .title {
     text-align: center;
     margin: 0;

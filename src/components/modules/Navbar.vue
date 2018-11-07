@@ -45,6 +45,8 @@ export default {
   border-bottom: none!important;
   @include flexCenter;
   li {
+    margin-left: 20px;
+    margin-right: 20px;
     font-size: 24px !important;
   }
 }

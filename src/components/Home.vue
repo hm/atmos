@@ -7,7 +7,7 @@
     class="home">
     <div class="container">
       <h1> {{ pascalCase(season) }} {{ year }} Anime </h1>
-      <anime-tiles :animes="animes" />
+      <anime-tiles v-if="animes" :animes="animes" />
     </div>
   </div>
 </template>
