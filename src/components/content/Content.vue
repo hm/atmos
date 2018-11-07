@@ -14,7 +14,7 @@
           <img :src="content.poster">
           <div>
             <p> Information </p>
-            <p> Type: <el-button size="mini" type="primary"> {{ content.type }} </el-button> </p>
+            <p> Type: <tag :label="content.type" /> </p>
             <p> Episodes: <span> {{ content.episodes }} </span> </p>
             <p> Status: <span> {{ content.status }} </span> </p>
           </div>
@@ -68,7 +68,8 @@
 <script>
 import maw from "@/myanimewatch";
 import { EPISODE, CONTENT } from "@/constants/routes";
-import Episode from './Episode'
+import Episode from '@/components/content/Episode'
+import Tag from '@/components/modules/Tag'
 
 export default {
   name: "Home",
@@ -211,7 +212,8 @@ export default {
     }
   },
   components: {
-    Episode
+    Episode,
+    Tag
   }
 };
 </script>
