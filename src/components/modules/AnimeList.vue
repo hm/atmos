@@ -18,15 +18,18 @@
       </template>
     </el-table-column>
     <el-table-column
-        prop="type"
-        label="Type"
-        sortable
-        width="180">
+      prop="type"
+      label="Type"
+      sortable
+      width="180">
     </el-table-column>
     <el-table-column
-        prop="episodes"
-        sortable
-        label="Episode Count">
+      prop="episodes"
+      sortable
+      label="Episodes">
+      <template slot-scope="scope">
+        <div class="flex-center"> {{ scope.row.episodes || 'unknown' }} </div>
+      </template>
     </el-table-column>
   </el-table>
 </template>

@@ -15,7 +15,7 @@
           <div>
             <p> Information </p>
             <p> Type: <tag :label="content.type" /> </p>
-            <p> Episodes: <span> {{ content.episodes }} </span> </p>
+            <p> Episodes: <span> {{ content.episodes || 'unknown' }} </span> </p>
             <p> Status: <span> {{ content.status }} </span> </p>
           </div>
           <div>
@@ -258,6 +258,13 @@ export default {
         padding: 20px;
         .episodes {
           @include flexCenter(row, flex-start);
+          $cols: 6;
+          $margin: 2px;
+          button {
+            margin: $margin;
+            width: calc(100% / #{$cols} - #{$margin * 2});
+            @include flexCenter;
+          }
         }
         p {
           font-weight: bold;

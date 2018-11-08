@@ -12,8 +12,9 @@
 
     <div v-if="selectedMirror">
       <iframe
+        scrolling="no"
         :src="selectedMirror.data.json_metadata.attachment.value" 
-        :key="selectedMirror.id" 
+        :key="`${selectedMirror.id}-episode-${index}`" 
         allow="encrypted-media" 
         allowfullscreen />
 
@@ -50,6 +51,10 @@ export default {
     episode () {
       return this.index + 1
     }
+  },
+  beforeUpdate () {
+    this.setSelectedMirror(),
+    this.setSelectedMirrorString()
   },
   methods: {
     setSelectedMirrorString () {
