@@ -53,15 +53,14 @@ export default {
     }
   },
   beforeUpdate () {
-    this.setSelectedMirror(),
-    this.setSelectedMirrorString()
+    this.setSelectedMirror()
   },
   methods: {
     setSelectedMirrorString () {
-      console.log(this.mirrors[this.index])
       this.selectedMirrorString = this.mirrors[this.index][0] ? this.getMirrorLabel(this.mirrors[this.index][0]) : []
     },
     setSelectedMirror (mirror) {
+      console.log(mirror)
       this.selectedMirror = this.mirrors[this.index].find(mirror => this.getMirrorLabel(mirror) === this.selectedMirrorString)
     },
     getBaseLink (mirror) {
