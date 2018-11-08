@@ -3,6 +3,7 @@
   <div :key="$route.params.search_query" >
     <div 
       v-loading="loading"
+      element-loading-text="Loading..."
       element-loading-background="rgba(0, 0, 0, 0.8)"
       class="container">
       <h1> Search results for {{ $route.params.search_query }} </h1>

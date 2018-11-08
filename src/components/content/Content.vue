@@ -11,7 +11,7 @@
       </div>
       <div class="body">
         <div class="left-col">
-          <img :src="content.poster">
+          <img @click="goToEpisodes()" :src="content.poster">
           <div>
             <p> Information </p>
             <p> Type: <tag :label="content.type" /> </p>
@@ -20,15 +20,13 @@
           </div>
           <div>
             <p> Statistics
-            <p> Score: <span> {{ content.score }} </span> </p>
-            <p> Popularity: <span> #{{ content.popularity }} </span> </p>
+            <p class="score" @click="openMal()"> Score: <span> {{ content.score }} </span> </p>
+            <p class="popularity" @click="openMal()"> Popularity: <span> #{{ content.popularity }} </span> </p>
           </div>
         </div>
         <div class="right-col">
           <div class="breadcrumbs">
-            <a> Anime </a> /
-            <a> {{ content.title }} </a> /
-            <a @click="goToEpisodes()"> Episodes </a> /
+            <a @click="goToEpisodes()"> {{ content.title }} </a> /
             <a v-if="episode > 0"> Episode {{ episode }} </a>
           </div>
           <div class="stream">
@@ -51,7 +49,7 @@
               <div class="flex-center" v-html="content.synopsis" />
             </template>
             <episode
-              v-else
+              v-else-if="episodesWithMirrors.length > 0"
               :mirrors="episodesWithMirrors || []"
               :maxEpisodes="maxEpisodes()"
               :index="parseInt(episode - 1)"
@@ -105,14 +103,21 @@ export default {
     }
   },
   async mounted() {
-    await this.load();
+    await this.load();  
   },
   computed: {
     episodesWithMirrors () {
-      return this.episodes.filter(x => x.length > 0)
+      return this.episodes.filter(x => x.length > 0);
     },
   },
   methods: {
+    openMal () {
+      window.open(`https://myanimelist.net/anime/${this.$route.params.content_id}/${this.replaceSpaces(this.content.title)}`, '_blank');
+    },
+    replaceSpaces (string) {
+      console.log(string.replace(/ /g, '_'))
+      return string.replace(/ /g, '_');
+    },
     async load() {
       this.loading = true;
       this.episode = this.$route.params.episode
@@ -133,7 +138,8 @@ export default {
       top_level_posts.splice(0, 0, thread.main_post);
 
       var episodes = []; // maybe theres a short hand for this...
-      for (var i = 0; i < this.content.episodes; i++) episodes.push([]);
+      const loopAmount = this.content.episodes > 0 ? this.content.episodes : 50
+      for (var i = 0; i < loopAmount; i++) episodes.push([]);
 
       // check top level posts for mirrors
       for (var i = 0; i < top_level_posts.length; i++) {
@@ -143,7 +149,7 @@ export default {
           continue;
         }
 
-        for (var j = 0; j < this.content.episodes; j++) {
+        for (var j = 0; j < loopAmount; j++) {
           if (
             post.data.tags.includes("ep" + (j + 1)) &&
             post.data.json_metadata.attachment.isIframe()
@@ -229,6 +235,11 @@ export default {
     justify-content: center;
     align-items: flex-start;
     .left-col {
+      img {
+        &:hover {
+          cursor:pointer;
+        }
+      }
       div {
         p {
           line-height: 15px;
@@ -236,10 +247,13 @@ export default {
           span {
             font-weight: normal;
           }
+          &:first-child {
+            padding-bottom: 5px;
+            border-bottom: 2px solid black;
+          }
         }
-        p:first-child {
-          padding-bottom: 5px;
-          border-bottom: 2px solid black;
+        .score:hover, .popularity:hover {
+          cursor:pointer;
         }
       }
     }
