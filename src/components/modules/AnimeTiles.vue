@@ -69,6 +69,9 @@ export default {
   .body {
     @include flexCenter(row, center, flex-start);
     img {
+      @media (max-width: 750px) {
+        height: 50vw;
+      }
       height: 100%;
       width: auto;
       overflow: auto;

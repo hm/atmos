@@ -251,6 +251,9 @@ export default {
       }
     }
     .left-col {
+      @media (max-width: 900px) {
+        padding: 0;
+      }
       img {
         &:hover {
           cursor:pointer;
@@ -277,6 +280,9 @@ export default {
       padding-left: 20px;
       padding-right: 20px;
       width: 100%;
+      @media (max-width: 900px) {
+        padding: 0;
+      }
       .breadcrumbs {
         margin: 5px;
         a:hover {
@@ -286,6 +292,9 @@ export default {
       .stream {
         background-color: $grey;
         padding: 20px;
+        @media (max-width: 900px) {
+          padding: 0;
+        }
         .episodes {
           @include flexCenter(row, flex-start);
           $margin: 2px;
@@ -303,8 +312,8 @@ export default {
             @media (max-width: 1000px) {
               width: calc(100% / #{$cols - 2} - #{$margin} * #{$cols - 4});
             }
-            @media (max-width: 900px) {
-              width: calc(100% / #{$cols - 3} - #{$margin} * #{$cols - 4});
+            @media (max-width: 700px) {
+              width: calc(100% / #{$cols - 4} - #{$margin} * #{$cols - 4});
             }
           }
         }

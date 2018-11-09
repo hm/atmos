@@ -30,6 +30,9 @@
       <span> Episode {{ episode }} </span>
       <i @click="$emit('next')" v-if="episode < maxEpisodes" class="el-icon-caret-right hover" aria-hidden="true"/>
     </h4>
+    <footer>
+      It is strongly recommended you use an ad-blocker such as uBlock Origin to avoid potentially malicious ads while viewing content.
+    </footer>
   </div>
 </template>
 
@@ -97,6 +100,21 @@ export default {
       max-height: 366.1875px;
       min-height: 260px;
       overflow: auto;
+      @media (max-width: 900px) {
+        width: 100vw;
+        max-width: 100%;
+        height: 47vw;
+      }
+    }
+  }
+}
+h4 {
+  @include flexCenter;
+  i {
+    font-size: 30px;
+    &:hover {
+      cursor:pointer;
+      opacity: 0.6;
     }
   }
 }

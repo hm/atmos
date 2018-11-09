@@ -23,10 +23,19 @@ body {
 }
 
 .router-view-container {
-	padding: 30px;
-	display: flex;
-	justify-content:center;
-	align-items:center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	@include flexCenter(column);
+}
+
+footer {
+	margin: 20px;
+	&.disclaimer {
+		color: white;
+	}
+	a {
+		color: grey;
+	}
 }
 
 .container {
@@ -36,6 +45,9 @@ body {
 	padding: $padding;
 	min-height: 50vh;
 	border-radius: 4px;
+	@media (max-width: 900px) {
+		max-width: 90vw;
+	}
 }
 
 .flex-center {
