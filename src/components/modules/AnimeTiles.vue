@@ -53,6 +53,12 @@ export default {
   $margin: 10px;
   padding: 10px;
   width: calc(33% - #{$margin} * 2);
+  @media (max-width: 1200px) {
+    width: calc(50% - #{$margin} * 2);
+  }
+  @media (max-width: 750px) {
+    width: 100%;
+  }
   height: auto;
   margin: $margin;
   .title {

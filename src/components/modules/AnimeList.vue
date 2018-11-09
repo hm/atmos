@@ -21,12 +21,13 @@
       prop="type"
       label="Type"
       sortable
-      width="180">
+      width="100">
     </el-table-column>
     <el-table-column
       prop="episodes"
       sortable
-      label="Episodes">
+      label="Episodes"
+      width="100">
       <template slot-scope="scope">
         <div class="flex-center"> {{ scope.row.episodes || 'unknown' }} </div>
       </template>
@@ -62,13 +63,26 @@ export default {
 @import '../../styles/global';
 .table {
   width: 100%;
+  @media (max-width: 900px) {
+    table {
+      table-layout: auto;
+    }
+  }
   tr {
     td:first-child:hover {
       cursor:pointer;
     }
+    @media (max-width: 900px) {
+      td:not(:first-child), th:not(:first-child) {
+        display: none;
+      }
+      table {
+        table-layout: auto;
+      }
+    }
   }
   div {
-    @include flexCenter(row, flex-start);
+    @include flexCenter(row, flex-start, center, nowrap);
     img {
       width:auto;
       height:50px;

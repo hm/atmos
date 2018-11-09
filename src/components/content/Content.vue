@@ -65,7 +65,6 @@
 
 <script>
 import maw from "@/myanimewatch";
-import { EPISODE, CONTENT } from "@/constants/routes";
 import Episode from '@/components/content/Episode'
 import Tag from '@/components/modules/Tag'
 
@@ -207,7 +206,7 @@ export default {
     goToEpisodes() {
       this.selectedEpisode = null;
       this.$router.push({
-        name: CONTENT,
+        name: 'content',
         params: {
           content_id: this.content_id
         }
@@ -225,15 +224,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/global';
+@import '../assets/styles/global';
 .container {
   .title {
     text-align: center;
   }
   .body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    @include flexCenter(row, flex-start, flex-start, nowrap);
+    @media (max-width: 900px) {
+      position: relative;
+      @include flexCenter;
+      .left-col {
+        order: 2;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 100%;
+        img {
+          position: absolute;
+          width: 50px;
+          right: 0px;
+          top: -50px;
+        }
+      }
+      .right-col {
+        order: 1,
+      }
+    }
     .left-col {
       img {
         &:hover {
@@ -272,12 +288,24 @@ export default {
         padding: 20px;
         .episodes {
           @include flexCenter(row, flex-start);
-          $cols: 6;
           $margin: 2px;
+          $cols: 6;
           button {
-            margin: $margin;
-            width: calc(100% / #{$cols} - #{$margin * 2});
             @include flexCenter;
+            margin: $margin;
+            // flex: 1;
+            @media (min-width: 1201px) {
+              width: calc(100% / #{$cols} - #{$margin} * #{$cols - 4});
+            }
+            @media (max-width: 1200px) {
+              width: calc(100% / #{$cols - 1} - #{$margin} * #{$cols - 4});
+            }
+            @media (max-width: 1000px) {
+              width: calc(100% / #{$cols - 2} - #{$margin} * #{$cols - 4});
+            }
+            @media (max-width: 900px) {
+              width: calc(100% / #{$cols - 3} - #{$margin} * #{$cols - 4});
+            }
           }
         }
         p {
