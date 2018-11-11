@@ -39,6 +39,11 @@
 <script>
 export default {
   name: "Episode",
+  metaInfo () {
+    return {
+      titleTemplate: `%s | Anime Episode ${this.episode}`
+    }
+  },
   props: [
     'index',
     'maxEpisodes',

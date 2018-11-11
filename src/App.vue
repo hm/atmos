@@ -18,6 +18,9 @@
 import navbar from "@/components/modules/Navbar"
 export default {
 	name: "App",
+	metaInfo: {
+		title: 'CodeBlue',
+	},
 	components: {
 		navbar
 	}

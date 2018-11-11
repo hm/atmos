@@ -17,7 +17,9 @@
     "lodash": "^4.17.11",
     "vue": "^2.5.2",
     "vue-hot-reload-api": "^2.3.1",
+    "vue-lazyload": "^1.2.6",
     "vue-masonry-css": "^1.0.3",
+    "vue-meta": "^1.5.5",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

@@ -11,8 +11,8 @@
       sortable
       width="auto">
       <template slot-scope="scope">
-        <div>
-          <img :src="scope.row.image_url">
+        <div v-lazy-container="{selector: 'img'}">
+          <img :data-src="scope.row.image_url">
           <div class="flex-center"> {{ scope.row.title }} </div>
         </div>
       </template>
@@ -75,6 +75,13 @@ export default {
     @media (max-width: 900px) {
       td:not(:first-child), th:not(:first-child) {
         display: none;
+      }
+      td {
+        .cell {
+          div {
+            width: 100%;
+          }
+        }
       }
       table {
         table-layout: auto;

@@ -70,6 +70,9 @@ import Tag from '@/components/modules/Tag'
 
 export default {
   name: "Home",
+  metaInfo: {
+    titleTemplate: `%s | Anime`
+  },
   data() {
     return {
       content_id: 0,
@@ -243,7 +246,7 @@ export default {
           position: absolute;
           width: 50px;
           right: 0px;
-          top: -50px;
+          bottom: 0px;
         }
       }
       .right-col {
@@ -253,6 +256,10 @@ export default {
     .left-col {
       @media (max-width: 900px) {
         padding: 0;
+        @include flexCenter(row, flex-start, flex-start);
+        div {
+          flex: 1;
+        }
       }
       img {
         &:hover {
@@ -293,7 +300,7 @@ export default {
         background-color: $grey;
         padding: 20px;
         @media (max-width: 900px) {
-          padding: 0;
+          padding: 10px;
         }
         .episodes {
           @include flexCenter(row, flex-start);

@@ -7,8 +7,11 @@
       <h4 class="title">
         {{ anime.title }}
       </h4>
-      <div class="body">
-        <img slot="reference" @click="viewShow(anime.mal_id)" :src="anime.image_url">
+      <div v-lazy-container="{selector: 'img'}" class="body">
+        <img
+          slot="reference"
+          @click="viewShow(anime.mal_id)"
+          :data-src="anime.image_url">
       </div>
       <div class="footer">
         <div class="genres">
@@ -51,12 +54,18 @@ export default {
  @include flexCenter(row, flex-start, flex-start);
  .tile {
   $margin: 10px;
-  padding: 10px;
-  width: calc(33% - #{$margin} * 2);
+  padding: 0px;
+  > div {
+    padding: 0;
+  }
+  width: calc(25% - #{$margin} * 2);
   @media (max-width: 1200px) {
-    width: calc(50% - #{$margin} * 2);
+    width: calc(33% - #{$margin} * 2);
   }
   @media (max-width: 750px) {
+    width: calc(50% - #{$margin} * 2);
+  }
+  @media (max-width: 450px) {
     width: 100%;
   }
   height: auto;
@@ -69,11 +78,8 @@ export default {
   .body {
     @include flexCenter(row, center, flex-start);
     img {
-      @media (max-width: 750px) {
-        height: 50vw;
-      }
-      height: 100%;
-      width: auto;
+      height: auto;
+      width: 100%;
       overflow: auto;
       &:hover {
         cursor: pointer;
@@ -87,9 +93,11 @@ export default {
   .footer {
     @include flexCenter(column, flex-start, flex-start);
     .genres{
-      padding: 5px;
       width: 100%;
-      @include flexCenter(row, center);
+      @include flexCenter(row, flex-start);
+      @media (max-width: 1200px) {
+        @include flexCenter(row, center);
+      }
     }
     .details {
       width: 100%;

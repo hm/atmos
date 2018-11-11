@@ -45,9 +45,14 @@ export default {
   border-bottom: none!important;
   @include flexCenter;
   li {
-    margin-left: 20px;
-    margin-right: 20px;
-    font-size: 24px !important;
+    font-size: 20px!important;
   }
+  @media (min-width: 1200px) {
+    li {
+      margin-left: 20px;
+      margin-right: 20px;
+      font-size: 24px !important;
+    }
+	}
 }
 </style>

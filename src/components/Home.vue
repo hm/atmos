@@ -18,6 +18,9 @@ import AnimeTiles from '@/components/modules/AnimeTiles'
 import upperFirst from 'lodash/upperFirst'
 export default {
   name: 'Home',
+  metaInfo: {
+    titleTemplate: '%s | Home'
+  },
   async created () {
     const date = new Date();
     this.year = date.getFullYear();

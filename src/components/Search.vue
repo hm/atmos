@@ -17,6 +17,9 @@ import AnimeList from '@/components/modules/AnimeList'
 import maw from "@/myanimewatch";
 export default {
   name: 'Home',
+  metaInfo: {
+    titleTemplate: '%s | Search'
+  },
   components: {
     AnimeList
   },

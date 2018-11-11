@@ -8,7 +8,7 @@ export default new Router({
     { name: 'home',    component: () => import('@/components/Home'),    path: '/' },
     { name: 'content', component: () => import('@/components/content/Content'), path: '/anime/:content_id',
       children: [
-        { name: 'episode', component: () => import('@/components/content/Episode'), path: ':episode' },
+        { name: 'episode', component: () => import('@/components/content/Episode'), path: 'episode/:episode' },
       ]
     },
     { name: 'search',  component: () => import('@/components/Search'),  path: '/search/:search_query'},
