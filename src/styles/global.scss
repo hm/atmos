@@ -35,8 +35,8 @@ footer {
 	&.disclaimer {
 		color: white;
 		margin-top: 20px;
-		margin-left: 30px;
-		margin-right: 30px;
+		margin: 10px;
+		margin-bottom: -15px;
 	}
 	a {
 		color: grey;
@@ -51,7 +51,7 @@ footer {
 	min-height: 50vh;
 	border-radius: 4px;
 	@media (max-width: 900px) {
-		max-width: 90vw;
+		max-width: 95vw;
 	}
 }
 
@@ -76,4 +76,9 @@ h1 {
 	@media (max-width: 900px) {
 		font-size: 20px;
 	}
+}
+
+.disabled {
+	opacity: 0.5;
+	pointer-events: none;
 }

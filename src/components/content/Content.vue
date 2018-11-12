@@ -53,8 +53,7 @@
               :mirrors="episodesWithMirrors || []"
               :maxEpisodes="maxEpisodes()"
               :index="parseInt(episode - 1)"
-              @next="nextEpisode()"
-              @prev="prevEpisode()"
+              @update="updateEpisode"
               />
           </div>
         </div>
@@ -70,8 +69,10 @@ import Tag from '@/components/modules/Tag'
 
 export default {
   name: "Home",
-  metaInfo: {
-    titleTemplate: `%s | Anime`
+  metaInfo () {
+    return {
+      titleTemplate: this.episode === 0 ? `%s | ${this.content.title}` : `%s | ${this.content.title} Ep ${this.episode}`
+    }
   },
   data() {
     return {
@@ -191,11 +192,8 @@ export default {
     },
     upvote() {},
     downvote() {},
-    prevEpisode() {
-      this.selectEpisode(parseInt(this.episode) - 1);
-    },
-    nextEpisode() {
-      this.selectEpisode(parseInt(this.episode) + 1);
+    updateEpisode(episode) {
+      this.selectEpisode(episode);
     },
     async selectEpisode(episode) {
       this.episode = episode
@@ -244,7 +242,7 @@ export default {
         width: 100%;
         img {
           position: absolute;
-          width: 50px;
+          width: 35px;
           right: 0px;
           bottom: 0px;
         }

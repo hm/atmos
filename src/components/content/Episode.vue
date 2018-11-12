@@ -21,15 +21,24 @@
       <div>
         <h4> 
         posted by {{ selectedMirror.data.poster }} 
-        <i @click="upvote()" class="fa fa-thumbs-up green hover" aria-hidden="true" />: {{ selectedMirror.up }} 
+        <i class="fa fa-thumbs-up green hover" aria-hidden="true" />: {{ selectedMirror.up }} 
         </h4>
       </div>
+
     </div>
+
     <h4>
-      <i @click="$emit('prev')" v-if="episode > 1" class="el-icon-caret-left hover" aria-hidden="true"/>
-      <span> Episode {{ episode }} </span>
-      <i @click="$emit('next')" v-if="episode < maxEpisodes" class="el-icon-caret-right hover" aria-hidden="true"/>
+      <el-pagination
+        background
+        :page-size="1"
+        @current-change="updateEpisode"
+        :pager-count="getPagerCount()"
+        :current-page="episode"
+        layout="pager, jumper"
+        :total="maxEpisodes">
+      </el-pagination>
     </h4>
+
     <footer>
       It is strongly recommended you use an ad-blocker such as uBlock Origin to avoid potentially malicious ads while viewing content.
     </footer>
@@ -39,11 +48,6 @@
 <script>
 export default {
   name: "Episode",
-  metaInfo () {
-    return {
-      titleTemplate: `%s | Anime Episode ${this.episode}`
-    }
-  },
   props: [
     'index',
     'maxEpisodes',
@@ -57,26 +61,35 @@ export default {
   },
   computed: {
     episode () {
-      return this.index + 1
+      return this.index + 1;
+    },
+    screenWidth () {
+      return window.innerWidth
     }
   },
   beforeUpdate () {
-    this.setSelectedMirror()
+    this.setSelectedMirror();
   },
   methods: {
+    getPagerCount () {
+      console.log(window.innerWidth)
+      return window.innerWidth > 900 ? 10 : 5
+    },
     setSelectedMirrorString () {
-      this.selectedMirrorString = this.mirrors[this.index][0] ? this.getMirrorLabel(this.mirrors[this.index][0]) : []
+      this.selectedMirrorString = this.mirrors[this.index][0] ? this.getMirrorLabel(this.mirrors[this.index][0]) : [];
     },
     setSelectedMirror (mirror) {
-      console.log(mirror)
-      this.selectedMirror = this.mirrors[this.index].find(mirror => this.getMirrorLabel(mirror) === this.selectedMirrorString)
+      this.selectedMirror = this.mirrors[this.index].find(mirror => this.getMirrorLabel(mirror) === this.selectedMirrorString);
     },
     getBaseLink (mirror) {
-      return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0]
+      return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0];
     },
     getMirrorLabel (mirror) {
-      return `${this.getBaseLink(mirror)} - ${mirror.data.poster} - ${mirror.up} upvotes`
+      return `${this.getBaseLink(mirror)} - ${mirror.data.poster} - ${mirror.up} upvotes`;
     },
+    updateEpisode (episode) {
+      this.$emit('update', episode);
+    }
   },
   watch: {
     episode: {
@@ -114,6 +127,7 @@ export default {
   }
 }
 h4 {
+  margin-top: 10px;
   @include flexCenter;
   i {
     font-size: 30px;
@@ -121,6 +135,10 @@ h4 {
       cursor:pointer;
       opacity: 0.6;
     }
+  }
+  span {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
 </style>
