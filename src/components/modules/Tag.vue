@@ -59,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .tag {
-  margin: 2px;
+  margin: 2px!important;
   padding: 2px;
   &:hover {
     opacity: 0.8;
