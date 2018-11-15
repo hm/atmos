@@ -147,21 +147,21 @@ export default {
       // check top level posts for mirrors
       for (var i = 0; i < top_level_posts.length; i++) {
         var post = top_level_posts[i];
-        if (!post.data.tags || post.data.tags == 0) {
+        if (!post.tags || post.tags == 0) {
           // #epN should exist
           continue;
         }
 
         for (var j = 0; j < loopAmount; j++) {
           if (
-            post.data.tags.includes("ep" + (j + 1)) &&
+            post.tags.includes("ep" + (j + 1)) &&
             post.data.json_metadata.attachment.isIframe()
           ) {
             // when edits occur, past tags all exist in the original posts 'data.tags' field
             // so instead, we look at *this posts in specific* tags
             var tags = thread.all_posts.find(
               p => p.transaction == post.transaction
-            ).data.tags;
+            ).tags;
 
             // verify integrity of possible edit
             if (!tags || tags.includes("ep" + (j + 1))) {
