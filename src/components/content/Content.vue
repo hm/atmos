@@ -71,7 +71,7 @@ export default {
   name: "Home",
   metaInfo () {
     return {
-      titleTemplate: this.episode === 0 ? `%s | ${this.content.title}` : `%s | ${this.content.title} Ep ${this.episode}`
+      titleTemplate: this.episode === 0 ? `%s | ${this.content.title}` : `%s | ${this.content.title} Episode ${this.episode}`
     }
   },
   data() {
