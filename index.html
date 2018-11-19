@@ -11,6 +11,15 @@
     <link rel="icon" type="image/png" href="https://avatars0.githubusercontent.com/u/36979098?s=400&u=088d8b6c24f6115d8574c02a4fac5e75c0d8e813&v=4">
     <!--Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <script type="text/javascript">
+        (function(){
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect != location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();
+    </script>
   </head>
   <body>
     <div id="app" />

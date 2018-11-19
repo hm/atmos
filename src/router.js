@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     { name: 'home',    component: () => import('@/components/Home'),    path: '/' },
     { name: 'content', component: () => import('@/components/content/Content'), path: '/anime/:content_id',
