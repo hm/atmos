@@ -43,6 +43,9 @@ export default {
 @import '../../styles/global';
 .navbar {
   border-bottom: none!important;
+  position: sticky;
+  z-index: 99;
+  top: 0;
   @include flexCenter;
   li {
     font-size: 20px!important;
