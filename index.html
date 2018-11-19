@@ -1,27 +1,7 @@
-<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=author content="Todd Kao"><meta name=description content="Anime Streaming site"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1,maximum-scale=1"><link rel=icon type=image/png href="https://avatars0.githubusercontent.com/u/36979098?s=400&u=088d8b6c24f6115d8574c02a4fac5e75c0d8e813&v=4"><link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel=stylesheet><script type=text/javascript>// Single Page Apps for GitHub Pages
-        // https://github.com/rafrex/spa-github-pages
-        // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
-        // ----------------------------------------------------------------------
-        // This script takes the current url and converts the path and query
-        // string into just a query string, and then redirects the browser
-        // to the new url with only a query string and hash fragment,
-        // e.g. http://www.foo.tld/one/two?a=b&c=d#qwe, becomes
-        // http://www.foo.tld/?p=/one/two&q=a=b~and~c=d#qwe
-        // Note: this 404.html file must be at least 512 bytes for it to work
-        // with Internet Explorer (it is currently > 512 bytes)
-        // If you're creating a Project Pages site and NOT using a custom domain,
-        // then set segmentCount to 1 (enterprise users may need to set it to > 1).
-        // This way the code will only replace the route part of the path, and not
-        // the real directory in which the app resides, for example:
-        // https://username.github.io/repo-name/one/two?a=b&c=d#qwe becomes
-        // https://username.github.io/repo-name/?p=/one/two&q=a=b~and~c=d#qwe
-        // Otherwise, leave segmentCount as 0.
-        var segmentCount = 0;
-        var l = window.location;
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
-          l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
-          (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash
-        );</script><link href=assets/css/app.c3a57ff28f796bcf6d72879f64f96cc2.css rel=stylesheet></head><body><div id=app><script type=text/javascript src=assets/js/manifest.934672b82140e04a0e1a.js></script><script type=text/javascript src=assets/js/vendor.c3542863e4fbcf539775.js></script><script type=text/javascript src=assets/js/app.56fdb64aa7ac7f0e7a63.js></script></body></html>
+<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=author content="Todd Kao"><meta name=description content="Anime Streaming site"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1,maximum-scale=1"><link rel=icon type=image/png href="https://avatars0.githubusercontent.com/u/36979098?s=400&u=088d8b6c24f6115d8574c02a4fac5e75c0d8e813&v=4"><link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel=stylesheet><script type=text/javascript>(function(){
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect != location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();</script><link href=assets/css/app.c3a57ff28f796bcf6d72879f64f96cc2.css rel=stylesheet></head><body><div id=app><script type=text/javascript src=assets/js/manifest.934672b82140e04a0e1a.js></script><script type=text/javascript src=assets/js/vendor.c3542863e4fbcf539775.js></script><script type=text/javascript src=assets/js/app.ebe5f23186a3608ca5fc.js></script></body></html>
