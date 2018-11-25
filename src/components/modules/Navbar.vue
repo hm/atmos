@@ -44,7 +44,7 @@ export default {
 .navbar {
   border-bottom: none!important;
   position: sticky;
-  z-index: 99;
+  z-index: 9999;
   top: 0;
   @include flexCenter;
   li {

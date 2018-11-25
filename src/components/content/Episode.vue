@@ -1,8 +1,10 @@
 <template>
   <div :key="`episode-${index}`" class="episode">
     <div>
-      <el-select v-model="selectedMirrorString">
-        <el-option 
+      <el-select
+        class="mirror-select"
+        v-model="selectedMirrorString">
+        <el-option
           v-for="mirror in mirrors[index]"
           :key="mirror.id"
           :value="getMirrorLabel(mirror)">
@@ -29,6 +31,7 @@
 
     <h4>
       <el-pagination
+        class="pagination"
         background
         :page-size="1"
         @current-change="updateEpisode"
@@ -103,6 +106,22 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.mirror-select {
+  input {
+    pointer-events: none !important;
+  }
+}
+  .pagination {
+    .el-pagination__jump {
+      margin-top: 10px;
+    }
+    .el-pager li.active {
+      background-color: #12161c!important;
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
 @import '../../styles/global';
