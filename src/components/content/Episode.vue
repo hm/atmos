@@ -105,10 +105,10 @@ export default {
             this.links[episode].push(response.substring(0, end));
           }
         }
-        this.selectedMirror = this.links[episode][0];
-        this.$forceUpdate();
         this.loading = false;
       }
+      this.selectedMirror = this.links[episode][0];
+      this.$forceUpdate();
     },
     getBaseLink (mirror) {
       return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0];
