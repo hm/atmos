@@ -1,13 +1,18 @@
 <template>
-  <div :key="`episode-${index}`" class="episode">
+  <div
+    v-loading="loading"
+    element-loading-text="Loading..."
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    :key="`episode-${episode}`"
+    class="episode">
     <div>
       <el-select
         class="mirror-select"
-        v-model="selectedMirrorString">
+        v-model="selectedMirror">
         <el-option
-          v-for="mirror in mirrors[index]"
-          :key="mirror.id"
-          :value="getMirrorLabel(mirror)">
+          v-for="mirror in links[episode]"
+          :key="mirror"
+          :value="mirror">
         </el-option>
       </el-select>
     </div>
@@ -15,17 +20,17 @@
     <div v-if="selectedMirror">
       <iframe
         scrolling="no"
-        :src="selectedMirror.data.json_metadata.attachment.value" 
-        :key="`${selectedMirror.id}-episode-${index}`" 
+        :src="selectedMirror" 
+        :key="`${selectedMirror}-episode-${episode}`" 
         allow="encrypted-media" 
         allowfullscreen />
 
-      <div>
+      <!-- <div>
         <h4> 
         posted by {{ selectedMirror.data.poster }} 
         <i class="fa fa-thumbs-up green hover" aria-hidden="true" />: {{ selectedMirror.up }} 
         </h4>
-      </div>
+      </div> -->
 
     </div>
 
@@ -35,10 +40,9 @@
         background
         :page-size="1"
         @current-change="updateEpisode"
-        :pager-count="getPagerCount()"
         :current-page="episode"
         layout="pager, jumper"
-        :total="maxEpisodes">
+        :total="max">
       </el-pagination>
     </h4>
 
@@ -49,40 +53,62 @@
 </template>
 
 <script>
+import requests from '@/requests';
 export default {
   name: "Episode",
   props: [
-    'index',
-    'maxEpisodes',
+    'episode',
     'mirrors',
+    'title',
+    'max',
   ],
   data () {
     return {
       selectedMirrorString: undefined,
       selectedMirror: undefined,
+      links: {},
+      loading: false,
     }
   },
   computed: {
-    episode () {
-      return this.index + 1;
-    },
     screenWidth () {
       return window.innerWidth
     }
   },
-  beforeUpdate () {
-    this.setSelectedMirror();
+  async mounted () {
+    this.getLinks(this.episode);
   },
   methods: {
-    getPagerCount () {
-      console.log(window.innerWidth)
-      return window.innerWidth > 900 ? 10 : 5
+    sanitize (string) {
+      return string
+        .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
+        .replace(/ /g, '-')
+        .replace(/[^\u0000-\u007F]+/g, '')
+        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*/g, '');
     },
-    setSelectedMirrorString () {
-      this.selectedMirrorString = this.mirrors[this.index][0] ? this.getMirrorLabel(this.mirrors[this.index][0]) : [];
-    },
-    setSelectedMirror (mirror) {
-      this.selectedMirror = this.mirrors[this.index].find(mirror => this.getMirrorLabel(mirror) === this.selectedMirrorString);
+    async getLinks(episode) {
+      if (!this.links[episode]) {
+        this.loading = true;
+        let response = await requests.get(`https://gogoanimes.co/${this.sanitize(this.title)}-episode-${episode}`);
+        let found = true;
+        while (1) {
+          const start = response.indexOf('data-video="');
+          if (start === -1) {
+            break;
+          }
+          response = response.substring(start + 12);
+          const end = response.indexOf('"');
+          if (!this.links[episode]) {
+            this.links[episode] = [];
+            this.links[episode].push(response.substring(0, end));
+          } else {
+            this.links[episode].push(response.substring(0, end));
+          }
+        }
+        this.selectedMirror = this.links[episode][0];
+        this.$forceUpdate();
+        this.loading = false;
+      }
     },
     getBaseLink (mirror) {
       return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0];
@@ -92,16 +118,8 @@ export default {
     },
     updateEpisode (episode) {
       this.$emit('update', episode);
-    }
-  },
-  watch: {
-    episode: {
-      handler: 'setSelectedMirrorString',
-      immediate: true
-    },
-    selectedMirrorString: {
-      handler: 'setSelectedMirror',
-      immediate: true
+      this.episode = episode;
+      this.getLinks(episode);
     }
   }
 }

@@ -6,7 +6,8 @@ import {
     ForgetIdentity,
     ExecuteEOSActions,
     EOSBinaryReader,
-    GetEOSService
+    GetEOSService,
+    GetTokenPrecision,
 } from '../../eos-forum/src/eos';
 
 export {
@@ -17,5 +18,6 @@ export {
     ForgetIdentity,
     ExecuteEOSActions,
     EOSBinaryReader,
-    GetEOSService
+    GetEOSService,
+    GetTokenPrecision,
 };

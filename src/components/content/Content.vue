@@ -29,19 +29,23 @@
             <a @click="goToEpisodes()"> {{ content.title }} </a> /
             <a v-if="episode > 0"> Episode {{ episode }} </a>
           </div>
-          <div class="stream">
+          <div
+            v-loading="findingEpisodes"
+            element-loading-text="Finding Episodes..."
+            element-loading-background="rgba(0, 0, 0, 0.8)" 
+            class="stream">
             <template v-if="episode === 0">
               <div class="episodes">
-                <template v-if="episodesWithMirrors.length > 0">
+                <template v-if="episodesReleased">
                   <el-button
                     type="info"
-                    v-for="(mirrors, index) in episodesWithMirrors"
-                    :key="mirrors.id"
-                    @click="selectEpisode(index + 1)">
-                    episode {{ (index + 1) }}
+                    v-for="ep in episodesReleased"
+                    :key="ep"
+                    @click="selectEpisode(ep)">
+                    episode {{ ep }}
                   </el-button>
                 </template>
-                <h1 v-else>
+                <h1 v-else-if="!findingEpisodes">
                   No Mirrors found for this series
                 </h1>
               </div>
@@ -49,10 +53,10 @@
               <div class="flex-center" v-html="content.synopsis" />
             </template>
             <episode
-              v-else-if="episodesWithMirrors.length > 0"
-              :mirrors="episodesWithMirrors || []"
-              :maxEpisodes="maxEpisodes()"
-              :index="parseInt(episode - 1)"
+              v-else-if="episodesReleased"
+              :episode="episode"
+              :title="content.title"
+              :max="episodesReleased"
               @update="updateEpisode"
               />
           </div>
@@ -66,7 +70,7 @@
 import maw from "@/myanimewatch";
 import Episode from '@/components/content/Episode'
 import Tag from '@/components/modules/Tag'
-
+import requests from "@/requests";
 export default {
   name: "Home",
   metaInfo () {
@@ -95,6 +99,8 @@ export default {
         title: "",
         synopsis: ""
       },
+      episodesReleased: undefined,
+      findingEpisodes: true,
     };
   },
   watch: {
@@ -106,20 +112,32 @@ export default {
     }
   },
   async mounted() {
-    await this.load();  
+    await this.load();
+    try {
+      console.log(this.sanitize(this.content.title))
+      let amount = await requests.get('https://gogoanimes.co/category/' + this.sanitize(this.content.title));
+      const epEnd = amount.split(`ep_end = '`);
+      this.episodesReleased = parseInt(epEnd[1].substring(0, epEnd[1].indexOf(`'`)));
+      this.findingEpisodes = false;
+    } catch (error) {
+      this.findingEpisodes = false;
+    }
   },
   computed: {
     episodesWithMirrors () {
       return this.episodes.filter(x => x.length > 0);
     },
   },
-  methods: {
+  methods: {  
     openMal () {
-      window.open(`https://myanimelist.net/anime/${this.$route.params.content_id}/${this.replaceSpaces(this.content.title)}`, '_blank');
+      window.open(`https://myanimelist.net/anime/${this.$route.params.content_id}/${this.sanitize(this.content.title)}`, '_blank');
     },
-    replaceSpaces (string) {
-      console.log(string.replace(/ /g, '_'))
-      return string.replace(/ /g, '_');
+    sanitize (string) {
+      return string
+        .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
+        .replace(/ /g, '-')
+        .replace(/[^\u0000-\u007F]+/g, '')
+        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*/g, '');
     },
     async load() {
       this.loading = true;
@@ -131,7 +149,7 @@ export default {
         this.content_id = this.$route.params.content_id;
 
         await this.setAnimeDetails();
-        await this.setThreadDetails();
+        // await this.setThreadDetails();
       }
       this.loading = false;
     },
