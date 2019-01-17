@@ -81,15 +81,21 @@ export default {
   methods: {
     sanitize (string) {
       return string
+        .replace(/ä/g, 'a')
+        .replace(/Ⅲ/g, 'iii')
+        .replace(/×/g, 'x')
         .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
         .replace(/ /g, '-')
-        .replace(/[^\u0000-\u007F]+/g, '')
-        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*/g, '');
+        .replace(/[^\u0000-\u007F]+/g, '-')
+        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*[;]*/g, '')
     },
     async getLinks(episode) {
       if (!this.links[episode]) {
         this.loading = true;
-        let response = await requests.get(`https://gogoanimes.co/${this.sanitize(this.title)}-episode-${episode}`);
+        let title = this.sanitize(this.title);
+        title = title.toLowerCase();
+        title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
+        let response = await requests.get(`https://gogoanimes.co/${title}-episode-${episode}`);
         let found = true;
         while (1) {
           const start = response.indexOf('data-video="');

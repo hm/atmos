@@ -114,10 +114,14 @@ export default {
   async mounted() {
     await this.load();
     try {
-      console.log(this.sanitize(this.content.title))
-      let amount = await requests.get('https://gogoanimes.co/category/' + this.sanitize(this.content.title));
+      let title = this.sanitize(this.content.title);
+      title = title.toLowerCase();
+      title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
+      console.log(title);
+      let amount = await requests.get('https://gogoanimes.co/category/' + title);
       const epEnd = amount.split(`ep_end = '`);
-      this.episodesReleased = parseInt(epEnd[1].substring(0, epEnd[1].indexOf(`'`)));
+      console.log(epEnd);
+      this.episodesReleased = parseInt(epEnd[epEnd.length - 1].substring(0, epEnd[epEnd.length - 1].indexOf(`'`)));
       this.findingEpisodes = false;
     } catch (error) {
       this.findingEpisodes = false;
@@ -134,10 +138,13 @@ export default {
     },
     sanitize (string) {
       return string
+        .replace(/ä/g, 'a')
+        .replace(/Ⅲ/g, 'iii')
+        .replace(/×/g, 'x')
         .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
         .replace(/ /g, '-')
-        .replace(/[^\u0000-\u007F]+/g, '')
-        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*/g, '');
+        .replace(/[^\u0000-\u007F]+/g, '-')
+        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*[;]*/g, '')
     },
     async load() {
       this.loading = true;
