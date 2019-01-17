@@ -2,7 +2,7 @@
   "name": "atmos-anime",
   "version": "1.0.0",
   "description": "atmos-anime",
-  "author": "Novusphere Team",
+  "author": "Todd Kao",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
