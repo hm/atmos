@@ -114,9 +114,10 @@ export default {
   async mounted() {
     await this.load();
     try {
-      let title = this.sanitize(this.content.title);
-      title = title.toLowerCase();
+      let title = this.content.title.toLowerCase();
       title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
+      title = title.replace('kakegurui××', 'kakegurui xx');
+      title = this.sanitize(title);
       console.log(title);
       let amount = await requests.get('https://gogoanimes.co/category/' + title);
       const epEnd = amount.split(`ep_end = '`);
@@ -140,7 +141,6 @@ export default {
       return string
         .replace(/ä/g, 'a')
         .replace(/Ⅲ/g, 'iii')
-        .replace(/×/g, 'x')
         .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
         .replace(/ /g, '-')
         .replace(/[^\u0000-\u007F]+/g, '-')

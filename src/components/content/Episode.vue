@@ -83,7 +83,6 @@ export default {
       return string
         .replace(/ä/g, 'a')
         .replace(/Ⅲ/g, 'iii')
-        .replace(/×/g, 'x')
         .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
         .replace(/ /g, '-')
         .replace(/[^\u0000-\u007F]+/g, '-')
@@ -92,9 +91,10 @@ export default {
     async getLinks(episode) {
       if (!this.links[episode]) {
         this.loading = true;
-        let title = this.sanitize(this.title);
-        title = title.toLowerCase();
+        let title = this.title.toLowerCase();
         title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
+        title = title.replace('kakegurui××', 'kakegurui xx');
+        title = this.sanitize(title);
         let response = await requests.get(`https://gogoanimes.co/${title}-episode-${episode}`);
         let found = true;
         while (1) {
