@@ -99,6 +99,7 @@ export default {
         title: "",
         synopsis: ""
       },
+      sanitizedTitle: '',
       episodesReleased: undefined,
       findingEpisodes: true,
     };
@@ -118,11 +119,16 @@ export default {
       title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
       title = title.replace('kakegurui××', 'kakegurui xx');
       title = this.sanitize(title);
+      this.sanitizedTitle = title;
       console.log(title);
       let amount = await requests.get('https://gogoanimes.co/category/' + title);
       const epEnd = amount.split(`ep_end = '`);
       console.log(epEnd);
       this.episodesReleased = parseInt(epEnd[epEnd.length - 1].substring(0, epEnd[epEnd.length - 1].indexOf(`'`)));
+      const cachedFarthestEp = parseInt(localStorage.getItem(this.sanitizedTitle));
+      if (cachedFarthestEp) {
+        this.selectEpisode(cachedFarthestEp);
+      }
       this.findingEpisodes = false;
     } catch (error) {
       this.findingEpisodes = false;
@@ -215,13 +221,13 @@ export default {
       this.content.synopsis = mal.synopsis;
       this.content.popularity = mal.popularity;
     },
-    upvote() {},
-    downvote() {},
     updateEpisode(episode) {
       this.selectEpisode(episode);
     },
     async selectEpisode(episode) {
-      this.episode = episode
+      this.episode = episode;
+      const cachedFarthestEp = parseInt(localStorage.getItem(this.sanitizedTitle));
+      localStorage.setItem(this.sanitizedTitle, episode);
       this.$router.push({
         name: 'episode',
         params: {
