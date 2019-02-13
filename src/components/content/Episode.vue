@@ -20,15 +20,15 @@
     <div v-if="selectedMirror">
       <iframe
         scrolling="no"
-        :src="selectedMirror" 
-        :key="`${selectedMirror}-episode-${episode}`" 
-        allow="encrypted-media" 
+        :src="selectedMirror"
+        :key="`${selectedMirror}-episode-${episode}`"
+        allow="encrypted-media"
         allowfullscreen />
 
       <!-- <div>
-        <h4> 
-        posted by {{ selectedMirror.data.poster }} 
-        <i class="fa fa-thumbs-up green hover" aria-hidden="true" />: {{ selectedMirror.up }} 
+        <h4>
+        posted by {{ selectedMirror.data.poster }}
+        <i class="fa fa-thumbs-up green hover" aria-hidden="true" />: {{ selectedMirror.up }}
         </h4>
       </div> -->
 

@@ -32,7 +32,7 @@
           <div
             v-loading="findingEpisodes"
             element-loading-text="Finding Episodes..."
-            element-loading-background="rgba(0, 0, 0, 0.8)" 
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             class="stream">
             <template v-if="episode === 0">
               <div class="episodes">
@@ -139,7 +139,7 @@ export default {
       return this.episodes.filter(x => x.length > 0);
     },
   },
-  methods: {  
+  methods: {
     openMal () {
       window.open(`https://myanimelist.net/anime/${this.$route.params.content_id}/${this.sanitize(this.content.title)}`, '_blank');
     },
@@ -212,14 +212,11 @@ export default {
     },
     async setAnimeDetails() {
       const mal = await maw.getAnimeInfo(this.content_id);
-      this.content.title = mal.title;
-      this.content.poster = mal.image_url;
-      this.content.type = mal.type;
-      this.content.episodes = mal.episodes ? mal.episodes : 0;
-      this.content.status = mal.status;
-      this.content.score = mal.score;
-      this.content.synopsis = mal.synopsis;
-      this.content.popularity = mal.popularity;
+      this.content = {
+        ...this.content,
+        ...mal,
+        poster: mal.image_url,
+      }
     },
     updateEpisode(episode) {
       this.selectEpisode(episode);
