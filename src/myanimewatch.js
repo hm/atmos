@@ -1,8 +1,7 @@
 import requests from "@/requests";
-import { GetNovusphere } from "@/novusphere";
-import { GetIdentity } from "@/eos";
-
-import { Post } from "../../eos-forum/src/types/post";
+// import { GetNovusphere } from "@/novusphere";
+// import { GetIdentity } from "@/eos";
+// import { Post } from "../../eos-forum/src/types/post";
 
 export default {
     async getAnimeInfo(id) {
