@@ -25,9 +25,14 @@ export default {
     const date = new Date();
     this.year = date.getFullYear();
     this.season = this.getAnimeSeason(date.getMonth());
-    const response = await maw.getSeasonAnime(this.year, this.season);
-    this.animes = response.anime.filter(x => x.genres.findIndex(y => y.name === "Hentai" || y.name === "Kids") === -1);
-    this.loading = false;
+    try {
+      const response = await maw.getSeasonAnime(this.year, this.season);
+      this.animes = response.anime.filter(x => x.genres.findIndex(y => y.name === "Hentai" || y.name === "Kids") === -1);
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+      console.log('error getting current seasons anime', error);
+    }
   },
   data () {
     return {

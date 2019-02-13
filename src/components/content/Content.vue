@@ -211,11 +211,15 @@ export default {
       this.episodes = episodes;
     },
     async setAnimeDetails() {
-      const mal = await maw.getAnimeInfo(this.content_id);
-      this.content = {
-        ...this.content,
-        ...mal,
-        poster: mal.image_url,
+      try {
+        const mal = await maw.getAnimeInfo(this.content_id);
+        this.content = {
+          ...this.content,
+          ...mal,
+          poster: mal.image_url,
+        }
+      } catch (error) {
+        console.log('error retrieving anime details', error);
       }
     },
     updateEpisode(episode) {

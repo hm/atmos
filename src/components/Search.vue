@@ -1,7 +1,7 @@
 
 <template>
   <div :key="$route.params.search_query" >
-    <div 
+    <div
       v-loading="loading"
       element-loading-text="Loading..."
       element-loading-background="rgba(0, 0, 0, 0.8)"
@@ -32,10 +32,14 @@ export default {
   methods: {
     async search () {
       this.loading = true;
-      this.results = undefined;
-      const response = await maw.searchAnime(this.$route.params.search_query);
-      this.results = response.results;
-      this.loading = false;
+      try {
+        const response = await maw.searchAnime(this.$route.params.search_query);
+        this.results = response.results;
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        console.log('error while searching for animes', error);
+      }
     }
   },
   watch: {
