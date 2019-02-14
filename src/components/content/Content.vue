@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import maw from "@/myanimewatch";
+import maw from '@/myanimewatch';
 import Episode from '@/components/content/Episode'
 import Tag from '@/components/modules/Tag'
-import requests from "@/requests";
+import axios from 'axios';
 export default {
   name: "Home",
   metaInfo () {
@@ -113,16 +113,16 @@ export default {
     }
   },
   async mounted() {
-    await this.load();
     try {
+      await this.load();
       let title = this.content.title.toLowerCase();
       title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
       title = title.replace('kakegurui××', 'kakegurui xx');
       title = this.sanitize(title);
       this.sanitizedTitle = title;
       console.log(title);
-      let amount = await requests.get('https://gogoanimes.co/category/' + title);
-      const epEnd = amount.split(`ep_end = '`);
+      let amount = await axios.get('https://gogoanimes.co/category/' + title);
+      const epEnd = amount.data.split(`ep_end = '`);
       console.log(epEnd);
       this.episodesReleased = parseInt(epEnd[epEnd.length - 1].substring(0, epEnd[epEnd.length - 1].indexOf(`'`)));
       const cachedFarthestEp = parseInt(localStorage.getItem(this.sanitizedTitle));
@@ -131,6 +131,7 @@ export default {
       }
       this.findingEpisodes = false;
     } catch (error) {
+      console.log('failed to find episode amount', error);
       this.findingEpisodes = false;
     }
   },
@@ -160,11 +161,14 @@ export default {
 
       if (this.content_id != this.$route.params.content_id) {
         this.content_id = this.$route.params.content_id;
-
-        await this.setAnimeDetails();
-        // await this.setThreadDetails();
+        try {
+          await this.setAnimeDetails();
+          this.loading = false;
+        } catch (error) {
+          console.log('failed to get anime details', error);
+          this.loading = false;
+        }
       }
-      this.loading = false;
     },
     async setThreadDetails() {
       const thread = await maw.getEpisodeThread(this.content_id);
@@ -215,8 +219,8 @@ export default {
         const mal = await maw.getAnimeInfo(this.content_id);
         this.content = {
           ...this.content,
-          ...mal,
-          poster: mal.image_url,
+          ...mal.data,
+          poster: mal.data.image_url,
         }
       } catch (error) {
         console.log('error retrieving anime details', error);

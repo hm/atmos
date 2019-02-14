@@ -27,7 +27,7 @@ export default {
     this.season = this.getAnimeSeason(date.getMonth());
     try {
       const response = await maw.getSeasonAnime(this.year, this.season);
-      this.animes = response.anime.filter(x => x.genres.findIndex(y => y.name === "Hentai" || y.name === "Kids") === -1);
+      this.animes = response.data.anime.filter(x => x.genres.findIndex(y => y.name === "Hentai" || y.name === "Kids") === -1);
       this.loading = false;
     } catch (error) {
       this.loading = false;

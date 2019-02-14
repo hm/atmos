@@ -34,7 +34,7 @@ export default {
       this.loading = true;
       try {
         const response = await maw.searchAnime(this.$route.params.search_query);
-        this.results = response.results;
+        this.results = response.data.results;
         this.loading = false;
       } catch (error) {
         this.loading = false;

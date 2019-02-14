@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import requests from '@/requests';
+import axios from 'axios';
 export default {
   name: "Episode",
   props: [
@@ -95,26 +95,32 @@ export default {
         title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
         title = title.replace('kakegurui××', 'kakegurui xx');
         title = this.sanitize(title);
-        let response = await requests.get(`https://gogoanimes.co/${title}-episode-${episode}`);
-        let found = true;
-        while (1) {
-          const start = response.indexOf('data-video="');
-          if (start === -1) {
-            break;
+        try {
+          let response = await axios.get(`https://gogoanimes.co/${title}-episode-${episode}`);
+          let html = response.data;
+          let found = true;
+          while (1) {
+            const start = html.indexOf('data-video="');
+            if (start === -1) {
+              break;
+            }
+            html = html.substring(start + 12);
+            const end = html.indexOf('"');
+            if (!this.links[episode]) {
+              this.links[episode] = [];
+              this.links[episode].push(html.substring(0, end));
+            } else {
+              this.links[episode].push(html.substring(0, end));
+            }
           }
-          response = response.substring(start + 12);
-          const end = response.indexOf('"');
-          if (!this.links[episode]) {
-            this.links[episode] = [];
-            this.links[episode].push(response.substring(0, end));
-          } else {
-            this.links[episode].push(response.substring(0, end));
-          }
+          this.loading = false;
+          this.selectedMirror = this.links[episode][0];
+          this.$forceUpdate();
+        } catch (error) {
+          this.loading = false;
+          console.log('failed to find mirrors', error);
         }
-        this.loading = false;
       }
-      this.selectedMirror = this.links[episode][0];
-      this.$forceUpdate();
     },
     getBaseLink (mirror) {
       return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0];
@@ -124,7 +130,6 @@ export default {
     },
     updateEpisode (episode) {
       this.$emit('update', episode);
-      this.episode = episode;
       this.getLinks(episode);
     }
   }

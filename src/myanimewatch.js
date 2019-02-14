@@ -1,17 +1,17 @@
-import requests from "@/requests";
+import axios from "axios";
 // import { GetNovusphere } from "@/novusphere";
 // import { GetIdentity } from "@/eos";
 // import { Post } from "../../eos-forum/src/types/post";
 
 export default {
     async getAnimeInfo(id) {
-        return requests.get(`https://api.jikan.moe/v3/anime/${id}`);
+        return axios.get(`https://api.jikan.moe/v3/anime/${id}`);
     },
     async getSeasonAnime(year, month) {
-        return requests.get(`https://api.jikan.moe/v3/season/${year}/${month}`);
+        return axios.get(`https://api.jikan.moe/v3/season/${year}/${month}`);
     },
     async searchAnime(query) {
-        return requests.get(`https://api.jikan.moe/v3/search/anime?q=${encodeURI(query)}&page=1`);
+        return axios.get(`https://api.jikan.moe/v3/search/anime?q=${encodeURI(query)}&page=1`);
     },
     async getEpisodePost(id) {
         const novusphere = GetNovusphere();
