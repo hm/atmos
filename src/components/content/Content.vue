@@ -154,20 +154,14 @@ export default {
         .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*[;]*/g, '')
     },
     async load() {
-      this.loading = true;
-      this.episode = this.$route.params.episode
+      this.episode === this.$route.params.episode
         ? this.$route.params.episode
         : 0;
 
       if (this.content_id != this.$route.params.content_id) {
         this.content_id = this.$route.params.content_id;
-        try {
-          await this.setAnimeDetails();
-          this.loading = false;
-        } catch (error) {
-          console.log('failed to get anime details', error);
-          this.loading = false;
-        }
+        await this.setAnimeDetails();
+        this.loading = false;
       }
     },
     async setThreadDetails() {
