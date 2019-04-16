@@ -96,7 +96,9 @@ export default {
         title = title.replace('kakegurui××', 'kakegurui xx');
         title = this.sanitize(title);
         try {
-          let response = await axios.get(`https://gogoanimes.co/${title}-episode-${episode}`);
+          let response = await axios.get(
+            'https://cors-anywhere.herokuapp.com/'
+            + `https://gogoanimes.co/${title}-episode-${episode}`);
           let html = response.data;
           let found = true;
           while (1) {

@@ -121,7 +121,10 @@ export default {
       title = this.sanitize(title);
       this.sanitizedTitle = title;
       console.log(title);
-      let amount = await axios.get('https://gogoanimes.co/category/' + title);
+      let amount = await axios.get(
+        'https://cors-anywhere.herokuapp.com/'
+        + 'https://gogoanimes.co/category/'
+        + title);
       const epEnd = amount.data.split(`ep_end = '`);
       console.log(epEnd);
       this.episodesReleased = parseInt(epEnd[epEnd.length - 1].substring(0, epEnd[epEnd.length - 1].indexOf(`'`)));
