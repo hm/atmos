@@ -1,18 +1,20 @@
-# Anime streaming site built on ATMOS platform
+# Anime mirror/streaming site built on ATMOS platform
+
+https://StreamAni.me
 
 TravisCI ![alt text](https://travis-ci.org/kodoburu/atmos.svg?branch=master)
 
-npm/yarn/pnpm take your pick (pnpm is the most performant)
+npm/yarn/pnpm take your pick
 ``` bash
 # install dependencies
-pnpm install
+npm install
 
 # serve with hot reload at localhost:8080
-pnpm run dev
+npm run dev
 
 # build for production with minification
-pnpm run build
+npm run build
 
 # build for production and view the bundle analyzer report
-pnpm run build --report
+npm run build --report
 ```
