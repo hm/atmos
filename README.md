@@ -2,8 +2,6 @@
 
 https://StreamAni.me
 
-TravisCI ![alt text](https://travis-ci.org/kodoburu/atmos.svg?branch=master)
-
 npm/yarn/pnpm take your pick
 ``` bash
 # install dependencies
