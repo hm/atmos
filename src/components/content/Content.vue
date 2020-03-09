@@ -99,7 +99,6 @@ export default {
         title: "",
         synopsis: ""
       },
-      sanitizedTitle: '',
       episodesReleased: undefined,
       findingEpisodes: true,
     };
@@ -132,9 +131,9 @@ export default {
         },
       });
       this.episodesReleased = sources.data.episodes.length;
-      const cachedFarthestEp = parseInt(localStorage.getItem(this.twistTitle));
-      if (cachedFarthestEp) {
-        this.selectEpisode(cachedFarthestEp);
+      const currentEpisode = parseInt(localStorage.getItem(this.twistTitle) || this.$route.params.episode);
+      if (currentEpisode) {
+        this.selectEpisode(currentEpisode);
       }
       this.findingEpisodes = false;
     } catch (error) {
@@ -218,8 +217,8 @@ export default {
     },
     async selectEpisode(episode) {
       this.episode = episode;
-      const cachedFarthestEp = parseInt(localStorage.getItem(this.sanitizedTitle));
-      localStorage.setItem(this.sanitizedTitle, episode);
+      const cachedFarthestEp = parseInt(localStorage.getItem(this.twistTitle));
+      localStorage.setItem(this.twistTitle, episode);
       this.$router.push({
         name: 'episode',
         params: {
