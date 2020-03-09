@@ -1,8 +1,5 @@
 <template>
   <div
-    v-loading="loading"
-    element-loading-text="Loading..."
-    element-loading-background="rgba(0, 0, 0, 0.8)"
     :key="`episode-${episode}`"
     class="episode">
     <!-- <div>
@@ -17,12 +14,15 @@
       </el-select>
     </div> -->
 
-    <template v-if="selectedMirror">
-      <video width="100%" height="auto" controls>
-        <source :src="selectedMirror" type="video/mp4">
-        Your browser does not support the video tag.
+    <VuePlyr v-if="sources" class="plyr-container" :options="{
+      fullscreen: {
+        iosNative: true,
+      },
+      }">
+      <video controls>
+        <source :src="getTwistUrl(episode)" type="video/mp4">
       </video>
-    </template>
+    </VuePlyr>
 
     <h4>
       <el-pagination
@@ -35,10 +35,6 @@
         :total="max">
       </el-pagination>
     </h4>
-
-    <footer>
-      It is strongly recommended you use an ad-blocker such as uBlock Origin to avoid potentially malicious ads while viewing content.
-    </footer>
   </div>
 </template>
 
@@ -61,15 +57,11 @@ export default {
       links: {},
       loading: false,
       twistURL: '',
-    }
-  },
-  computed: {
-    screenWidth () {
-      return window.innerWidth
+      sources: [],
     }
   },
   async mounted () {
-    this.getTwistUrl(this.episode);
+    await this.getSources();
   },
   methods: {
     decrypt (encryptedString) {
@@ -77,22 +69,18 @@ export default {
         CryptoJS.AES.decrypt(encryptedString, 'LXgIVP&PorO68Rq7dTx8N^lP!Fa5sGJ^*XK')
       );
     },
-    async getTwistUrl(episode) {
-      const sources = await axios({
+    async getSources() {
+      this.sources = await axios({
         url: `https://twist.moe/api/anime/${this.title}/sources`,
         headers: {
           'Access-Control-Allow-Headers': 'x-access-token',
           'x-access-token': '1rj2vRtegS8Y60B3w3qNZm5T2Q0TN2NR'
         },
       });
-      if (!sources) {
-        return false;
-      }
-      const url = this.decrypt(sources.data[episode - 1].source);
-      this.links[episode] = [];
-      this.links[episode].push('http://api.streamani.me?url=' + url);
-      this.selectedMirror = this.links[episode][0];
-      this.$forceUpdate();
+    },
+    getTwistUrl(episode) {
+      const url = this.decrypt(this.sources.data[episode - 1].source);
+      return 'http://api.streamani.me?url=' + url;
     },
     getBaseLink (mirror) {
       return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0];
@@ -102,7 +90,6 @@ export default {
     },
     updateEpisode (episode) {
       this.$emit('update', episode);
-      this.getTwistUrl(episode);
     }
   }
 }
@@ -160,5 +147,13 @@ h4 {
     margin-right: 10px;
     margin-left: 10px;
   }
+}
+</style>
+
+<style>
+.plyr--video, .plyr video {
+  width: 100% !important;
+  height: unset !important;
+  vertical-align: unset !important;
 }
 </style>

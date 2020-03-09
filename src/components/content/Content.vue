@@ -218,7 +218,10 @@ export default {
     async selectEpisode(episode) {
       this.episode = episode;
       const cachedFarthestEp = parseInt(localStorage.getItem(this.twistTitle));
-      localStorage.setItem(this.twistTitle, episode);
+      if (episode > cachedFarthestEp) {
+        localStorage.setItem(this.twistTitle, episode);
+      }
+
       this.$router.push({
         name: 'episode',
         params: {
