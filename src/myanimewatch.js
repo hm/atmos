@@ -10,6 +10,14 @@ export default {
     async getSeasonAnime(year, month) {
         return axios.get(`https://api.jikan.moe/v3/season/${year}/${month}`);
     },
+    async getTwistAnime() {
+      return axios.get(`http://api.streamani.me?url=api/anime`, {
+        headers: {
+          'Access-Control-Allow-Headers': 'x-access-token',
+          'x-access-token': '1rj2vRtegS8Y60B3w3qNZm5T2Q0TN2NR'
+        },
+      });
+    },
     async searchAnime(query) {
         return axios.get(`https://api.jikan.moe/v3/search/anime?q=${encodeURI(query)}&page=1`);
     },

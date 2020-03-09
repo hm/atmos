@@ -55,7 +55,7 @@
             <episode
               v-else-if="episodesReleased"
               :episode="episode"
-              :title="content.title"
+              :title="twistTitle"
               :max="episodesReleased"
               @update="updateEpisode"
               />
@@ -112,23 +112,27 @@ export default {
       this.load();
     }
   },
+  computed: {
+    episodesWithMirrors () {
+      return this.episodes.filter(x => x.length > 0);
+    },
+    twistTitle () {
+      return this.content.title.toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-");
+    }
+  },
   async mounted() {
     try {
       await this.load();
-      let title = this.content.title.toLowerCase();
-      title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
-      title = title.replace('kakegurui××', 'kakegurui xx');
-      title = this.sanitize(title);
-      this.sanitizedTitle = title;
-      console.log(title);
-      let amount = await axios.get(
-        'https://cors-anywhere.herokuapp.com/'
-        + 'https://gogoanimes.co/category/'
-        + title);
-      const epEnd = amount.data.split(`ep_end = '`);
-      console.log(epEnd);
-      this.episodesReleased = parseInt(epEnd[epEnd.length - 1].substring(0, epEnd[epEnd.length - 1].indexOf(`'`)));
-      const cachedFarthestEp = parseInt(localStorage.getItem(this.sanitizedTitle));
+      const sources = await axios({
+        url: `https://twist.moe/api/anime/${this.twistTitle}`,
+        headers: {
+          'Access-Control-Allow-Headers': 'x-access-token',
+          'x-access-token': '1rj2vRtegS8Y60B3w3qNZm5T2Q0TN2NR'
+        },
+      });
+      this.episodesReleased = sources.data.episodes.length;
+      const cachedFarthestEp = parseInt(localStorage.getItem(this.twistTitle));
       if (cachedFarthestEp) {
         this.selectEpisode(cachedFarthestEp);
       }
@@ -138,23 +142,9 @@ export default {
       this.findingEpisodes = false;
     }
   },
-  computed: {
-    episodesWithMirrors () {
-      return this.episodes.filter(x => x.length > 0);
-    },
-  },
   methods: {
     openMal () {
       window.open(`https://myanimelist.net/anime/${this.$route.params.content_id}/${this.sanitize(this.content.title)}`, '_blank');
-    },
-    sanitize (string) {
-      return string
-        .replace(/ä/g, 'a')
-        .replace(/Ⅲ/g, 'iii')
-        .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
-        .replace(/ /g, '-')
-        .replace(/[^\u0000-\u007F]+/g, '-')
-        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*[;]*/g, '')
     },
     async load() {
       this.episode === this.$route.params.episode

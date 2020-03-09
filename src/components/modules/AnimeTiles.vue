@@ -7,12 +7,11 @@
       <h4 class="title">
         {{ anime.title }}
       </h4>
-      <div v-lazy-container="{selector: 'img'}" class="body">
-        <img
-          slot="reference"
-          @click="viewShow(anime.mal_id)"
-          :data-src="anime.image_url">
-      </div>
+        <router-link :to="showLink(anime.mal_id)">
+          <div v-lazy-container="{selector: 'img'}" class="body">
+            <img slot="reference" :data-src="anime.image_url" />
+          </div>
+        </router-link>
       <div class="footer">
         <div class="genres">
           <tag
@@ -34,13 +33,13 @@ export default {
     animes: Array
   },
   methods: {
-    viewShow (mal_id) {
-      this.$router.push({
+    showLink (mal_id) {
+      return {
         name: 'content',
         params: {
           'content_id': mal_id
         }
-      })
+      }
     }
   },
   components: {

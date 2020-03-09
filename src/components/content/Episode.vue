@@ -5,7 +5,7 @@
     element-loading-background="rgba(0, 0, 0, 0.8)"
     :key="`episode-${episode}`"
     class="episode">
-    <div>
+    <!-- <div>
       <el-select
         class="mirror-select"
         v-model="selectedMirror">
@@ -15,24 +15,14 @@
           :value="mirror">
         </el-option>
       </el-select>
-    </div>
+    </div> -->
 
-    <div v-if="selectedMirror">
-      <iframe
-        scrolling="no"
-        :src="selectedMirror"
-        :key="`${selectedMirror}-episode-${episode}`"
-        allow="encrypted-media"
-        allowfullscreen />
-
-      <!-- <div>
-        <h4>
-        posted by {{ selectedMirror.data.poster }}
-        <i class="fa fa-thumbs-up green hover" aria-hidden="true" />: {{ selectedMirror.up }}
-        </h4>
-      </div> -->
-
-    </div>
+    <template v-if="selectedMirror">
+      <video width="100%" height="auto" controls>
+        <source :src="selectedMirror" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </template>
 
     <h4>
       <el-pagination
@@ -54,6 +44,8 @@
 
 <script>
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
+
 export default {
   name: "Episode",
   props: [
@@ -68,6 +60,7 @@ export default {
       selectedMirror: undefined,
       links: {},
       loading: false,
+      twistURL: '',
     }
   },
   computed: {
@@ -76,53 +69,30 @@ export default {
     }
   },
   async mounted () {
-    this.getLinks(this.episode);
+    this.getTwistUrl(this.episode);
   },
   methods: {
-    sanitize (string) {
-      return string
-        .replace(/ä/g, 'a')
-        .replace(/Ⅲ/g, 'iii')
-        .replace(/[^a-zA-Z0-9[\t][-]]*/g, "")
-        .replace(/ /g, '-')
-        .replace(/[^\u0000-\u007F]+/g, '-')
-        .replace(/[:]*[?]*[!]*[(]*[)]*[,]*[.]*[~]*[']*["]*[*]*[@]*[;]*/g, '')
+    decrypt (encryptedString) {
+      return CryptoJS.enc.Utf8.stringify(
+        CryptoJS.AES.decrypt(encryptedString, 'LXgIVP&PorO68Rq7dTx8N^lP!Fa5sGJ^*XK')
+      );
     },
-    async getLinks(episode) {
-      if (!this.links[episode]) {
-        this.loading = true;
-        let title = this.title.toLowerCase();
-        title = title.replace('hangyaku no lelouch', 'lelouch of the rebellion');
-        title = title.replace('kakegurui××', 'kakegurui xx');
-        title = this.sanitize(title);
-        try {
-          let response = await axios.get(
-            'https://cors-anywhere.herokuapp.com/'
-            + `https://gogoanimes.co/${title}-episode-${episode}`);
-          let html = response.data;
-          let found = true;
-          while (1) {
-            const start = html.indexOf('data-video="');
-            if (start === -1) {
-              break;
-            }
-            html = html.substring(start + 12);
-            const end = html.indexOf('"');
-            if (!this.links[episode]) {
-              this.links[episode] = [];
-              this.links[episode].push(html.substring(0, end));
-            } else {
-              this.links[episode].push(html.substring(0, end));
-            }
-          }
-          this.loading = false;
-          this.selectedMirror = this.links[episode][0];
-          this.$forceUpdate();
-        } catch (error) {
-          this.loading = false;
-          console.log('failed to find mirrors', error);
-        }
+    async getTwistUrl(episode) {
+      const sources = await axios({
+        url: `https://twist.moe/api/anime/${this.title}/sources`,
+        headers: {
+          'Access-Control-Allow-Headers': 'x-access-token',
+          'x-access-token': '1rj2vRtegS8Y60B3w3qNZm5T2Q0TN2NR'
+        },
+      });
+      if (!sources) {
+        return false;
       }
+      const url = this.decrypt(sources.data[episode - 1].source);
+      this.links[episode] = [];
+      this.links[episode].push('http://api.streamani.me?url=' + url);
+      this.selectedMirror = this.links[episode][0];
+      this.$forceUpdate();
     },
     getBaseLink (mirror) {
       return mirror.data.json_metadata.attachment.value.match(/^.+?[^\/:](?=[?\/]|$)/)[0];
@@ -132,7 +102,7 @@ export default {
     },
     updateEpisode (episode) {
       this.$emit('update', episode);
-      this.getLinks(episode);
+      this.getTwistUrl(episode);
     }
   }
 }
