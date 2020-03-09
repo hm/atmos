@@ -14,11 +14,7 @@
       </el-select>
     </div> -->
 
-    <VuePlyr v-if="sources" class="plyr-container" :options="{
-      fullscreen: {
-        iosNative: true,
-      },
-      }">
+    <VuePlyr v-if="sources" class="plyr-container">
       <video controls>
         <source :src="getTwistUrl(episode)" type="video/mp4">
       </video>
