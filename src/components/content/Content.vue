@@ -131,7 +131,7 @@ export default {
         },
       });
       this.episodesReleased = sources.data.episodes.length;
-      const currentEpisode = parseInt(localStorage.getItem(this.twistTitle) || this.$route.params.episode);
+      const currentEpisode = parseInt(this.$route.params.episode || localStorage.getItem(this.twistTitle));
       if (currentEpisode) {
         this.selectEpisode(currentEpisode);
       }
